@@ -13,7 +13,7 @@ char ← suspendProcess(PID)
 char ← resumeProcess(PID)
 Void ← exitProcess(code)
 void ← getDeviceInfo(DID,*buffer) < move the info of the device into the given buffer 
-DID* ← claimDevice(ID,BAR,Virtual_Address) ← maps device directly into the virtualAddress given
+DID* ← claimDevice(ID) ← maps device directly into the virtualAddress given
 BARToken ← ExposeBar(DID,BAR,PIN)
 char ← AcceptBar(BARToken,PIN,VA)
 pairDevice(DID,BAR,BARToken,PIN)
@@ -39,7 +39,7 @@ SSID* ← ShareSegment(PIN,SGID,flags:int8_bitmask) ← this is a virutalSegment
 Void ← AcceptSegment(SSID,PIN,virtual_Address) ← this is a virtualSegment
 Success ← SwapSegments(SGID,SGID_2)
 Success ← actknowlegeSwap() -- this tells the kernel the process is ready for a segmenentSwap when it comes to shared SSIDs (don't know if it will be implmented)
-success ← openPort(Port) -- this binds the port to the currernt callers mailBoxIn
+success ← openPort(Port,TID*) -- this binds the port to the currernt callers mailBoxIn
 char ← sendMessage(Port,Urgent_flag,....)  < -- nonBlocking for intigers and strings upto uint_default_size
 char ← sendObject(port,*ptr,Bytes:long,Urgent_flag) <-- limited to < 1 HarwarePage worth (calibarate to hardware) -- nonBlocking as well
 tuple[remaining,port,tuple[header,playload]] ← wait_Message() <pulls from your inbox Only (blocking)
