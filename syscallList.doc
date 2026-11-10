@@ -40,14 +40,13 @@ Void ← AcceptSegment(SSID,PIN,virtual_Address) ← this is a virtualSegment
 Success ← SwapSegments(SGID,SGID_2)
 Success ← actknowlegeSwap() -- this tells the kernel the process is ready for a segmenentSwap when it comes to shared SSIDs (don't know if it will be implmented)
 success ← openPort(Port,TID*) -- this binds the port to the currernt callers mailBoxIn
-char ← sendMessage(Port,Urgent_flag,....)  < -- nonBlocking for intigers and strings upto uint_default_size
-char ← sendObject(port,*ptr,Bytes:long,Urgent_flag) <-- limited to < 1 HarwarePage worth (calibarate to hardware) -- nonBlocking as well
+char ← sendMessage(Port,DirectMessage,....)  < -- nonBlocking for intigers and strings upto uint_default_size
+char ← sendObject(port,*ptr,Bytes:long,DirectMessage) <-- limited to < 1 HarwarePage worth (calibarate to hardware) -- nonBlocking as well
 tuple[remaining,port,tuple[header,playload]] ← wait_Message() <pulls from your inbox Only (blocking)
 Success ← wait_Object(&Buffer) -- blocking
 char ← CheckPermssion(PID,*CheckForm) -- returns a flag (Jo/Cs) or a value in the return register 
 
 note the mail system uses a flushing protocal for IPC similaor to lua's IO unless on a unifiedlayoutMap
-2nd when it comes to the urgent_flag their is a price 
 
 
 typedef struct {
@@ -144,8 +143,8 @@ typedef struct {
 • Bit 3 : wt/wb – Cache Write-Policy Selector (0 = Write-Through, 1 = Write-Back)
 • Bit 4 : DPC/EWC – Disable Page Cache Entirely/EnableWriteCombining 
 • bit 5 : exe – Execute-able
-• Bit 6 : MB (2MB) – Large Page Layout Allocation (Sets Page Size bit at the PD level)
-• Bit 7 : GB (1GB) – Huge Page Layout Allocation (Sets Page Size bit at the PDPT level)
+• Bit 6 : LARGE – Large Page Layout Allocation (Sets Page Size bit at the PD level)
+• Bit 7 : HUGE – Huge Page Layout Allocation (Sets Page Size bit at the PDPT level)
 • Bit 8 : Guard-Bottom – Single Lower-Bound Guard Page
 • Bit 9 : Guard-Top – Single Upper-Bound Guard Page
 • Bit 10 : SigIso         - Segment Isolation (used to disable ShareSegment on this segment)
