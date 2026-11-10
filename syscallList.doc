@@ -63,13 +63,12 @@ typedef struct {
 
 typedef struct {
     uint8_t  bar_index;      // Which BAR (0-5)
-    void*    virtual_address;// Where the driver wants it in user space
-    uint16_t page_flags;     // Your Bitmask flags from Page 3 (WT/WB, DPC, etc.)
+    int64_t    virtual_address;// Where the driver wants it in user space
 } BarRequest;
 
 typedef struct {
     uint32_t     request_count;
-    BarRequest   requests[6]; // Max PCIe BARs
+    BarRequest   requests[n] // Max PCIe BARs
 } BarMappingRequestTable;
 
 
@@ -150,7 +149,7 @@ typedef struct {
 • Bit 8 : Guard-Bottom – Single Lower-Bound Guard Page
 • Bit 9 : Guard-Top – Single Upper-Bound Guard Page
 • Bit 10 : SigIso         - Segment Isolation (used to disable ShareSegment on this segment)
-• Bit 11 : PinPage      - Physical Page-Frame Pinning
+• Bit 11 : PinSegment     - Physical Page-Frame Pinning
 • Bit 12 : RESERVED     - [ Unassigned / Free / Backfilled ]
 • Bit 13 : RESERVED     - [ Unassigned / Free / Backfilled ]
 • Bit 14 : RESERVED     - [ Unassigned / Free / Backfilled ]
