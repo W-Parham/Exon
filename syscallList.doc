@@ -13,7 +13,7 @@ char ← suspendProcess(PID)
 char ← resumeProcess(PID)
 Void ← exitProcess(code)
 void ← getDeviceInfo(DID,*buffer) < move the info of the device into the given buffer 
-DID* ← claimDevice(ID) ← maps device directly into the virtualAddress given
+Success ← claimDevice(ID, *BarMappingRequestTable) ← maps device directly into the virtualAddress given
 BARToken ← ExposeBar(DID,BAR,PIN)
 char ← AcceptBar(BARToken,PIN,VA)
 pairDevice(DID,BAR,BARToken,PIN)
@@ -59,6 +59,27 @@ typedef struct {
 	header info; <-- this is the header of a message
 	void payload[]
 } envlope;
+
+
+typedef struct {
+    uint8_t  bar_index;      // Which BAR (0-5)
+    void*    virtual_address;// Where the driver wants it in user space
+    uint16_t page_flags;     // Your Bitmask flags from Page 3 (WT/WB, DPC, etc.)
+} BarRequest;
+
+typedef struct {
+    uint32_t     request_count;
+    BarRequest   requests[6]; // Max PCIe BARs
+} BarMappingRequestTable;
+
+
+
+
+
+
+
+
+
 
 
 typedef struct { <-- this is not the ProcessControlBlock that is handled by the kernel 
