@@ -14,7 +14,9 @@ char ← resumeProcess(PID)
 Void ← exitProcess(code)
 void ← getDeviceInfo(DID,*buffer) < move the info of the device into the given buffer 
 DID* ← claimDevice(ID,BAR,Virtual_Address) ← maps device directly into the virtualAddress given
-Pipe ← DevicePip(...) -- this isn't yet maped out correcly my idea is to use this to help DMA 
+BARToken ← ExposeBar(DID,BAR,PIN)
+char ← AcceptBar(BARToken,PIN,VA)
+pairDevice(DID,BAR,BARToken,PIN)
 Void ← FreeDevice(DID)
 char ← RegiserEvent(ID,*Fn)
 Char ← tiggerEvent(ID,...)
