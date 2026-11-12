@@ -40,7 +40,7 @@ Void ← AcceptSegment(SSID,PIN,virtual_Address) ← this is a virtualSegment
 Success ← SwapSegments(SGID,SGID_2)
 Success ← actknowlegeSwap() -- this tells the kernel the process is ready for a segmenentSwap when it comes to shared SSIDs (don't know if it will be implmented)
 success ← openPort(Port,TID*) -- this binds the port to the currernt callers mailBoxIn
-char ← sendMessage(Port,DirectMessage,....)  < -- nonBlocking for intigers and strings upto uint_default_size
+char ← sendMessage(Port,DirectMessage,....)  < -- nonBlocking for intigers and strings upto uint_default_size (Directmessage is blocking however)
 char ← sendObject(port,*ptr,Bytes:long,DirectMessage) <-- limited to < 1 HarwarePage worth (calibarate to hardware) -- nonBlocking as well
 tuple[remaining,port,tuple[header,playload]] ← wait_Message() <pulls from your inbox Only (blocking)
 Success ← wait_Object(&Buffer) -- blocking
@@ -74,9 +74,17 @@ typedef struct {
 
 
 
+typedef struct {
+	int64_t virtual_Base
+	int64_t maxBase
+	int16_t bitmask
+	**int64_t physcalFramesUsed;
+} SegmentID;
 
-
-
+typedef struct {
+	*Segment SSID;
+	int32 pin;
+} SharedSegment
 
 
 
