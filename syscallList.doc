@@ -32,11 +32,11 @@ Success ← terminateThread(TID)
 Success ← suspendThread(TID)
 void ← resumeThread(TID)
 Void ← yield(nSec)
-SGID* ← CreateSegment(VirtualAddress,#Count,*flags) ← like virtualAllooc/mmap
+SGID* ← CreateSegment(Virtual_Page_number,#Count,*flags) ← like virtualAllooc/mmap
 char ← SetSementFlags(SGID,*flags) <-- dose not work on a SSID
 Success ← FreeSegmet(SGID)
 SSID* ← ShareSegment(PIN,SGID,flags:int8_bitmask) ← this is a virutalSegment this is how to use tradtional shared memory 
-Void ← AcceptSegment(SSID,PIN,virtual_Address) ← this is a virtualSegment
+Void ← AcceptSegment(SSID,PIN,Virtual_Page_number) ← this is a virtualSegment
 Success ← SwapSegments(SGID,SGID_2)
 Success ← actknowlegeSwap() -- this tells the kernel the process is ready for a segmenentSwap when it comes to shared SSIDs (don't know if it will be implmented)
 success ← openPort(Port,TID*) -- this binds the port to the currernt callers mailBoxIn
