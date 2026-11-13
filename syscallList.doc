@@ -32,7 +32,7 @@ Success ← terminateThread(TID)
 Success ← suspendThread(TID)
 void ← resumeThread(TID)
 Void ← yield(nSec)
-SGID* ← AllocateSegment(VirtualAddress,#Count,*flags) ← virtualAllooc/mmap
+SGID* ← CreateSegment(VirtualAddress,#Count,*flags) ← like virtualAllooc/mmap
 char ← SetSementFlags(SGID,*flags) <-- dose not work on a SSID
 Success ← FreeSegmet(SGID)
 SSID* ← ShareSegment(PIN,SGID,flags:int8_bitmask) ← this is a virutalSegment this is how to use tradtional shared memory 
@@ -76,9 +76,9 @@ typedef struct {
 
 typedef struct {
 	int64_t virtual_Base
-	int64_t maxBase
-	int16_t bitmask
+	int64_t virtual_max
 	**int64_t physcalFramesUsed;
+	int16_t bitmask_flags;
 } SegmentID;
 
 typedef struct {
@@ -110,7 +110,7 @@ typedef struct { <-- this is not the ProcessControlBlock that is handled by the 
 typedef struct {
 	segments:ref[tuple[int64,ref[SSID]]]
 	P&ACL:ref[array[int64,Config.MaxTopics]]  // permission&AccessContorlList System capabilities (Network, Disk, IPC, etc.) using bitmask based system
-	threads:ref[array[ref[ThreadControlBlock],PCF.MaxThreads]]
+	threads:ref[array[ref[ThreadControlBlock],PCF.MaxThreads,CurrentNumberOfThreads]]
 	priority: long                       // Scheduling priority tier
 	maxTime: long                      // Maximum CPU execution time allowed
 	mailBoxIn:array[Config.maxSize]
@@ -123,6 +123,8 @@ typedef struct {
 	StackInfo:array[union[SSID,SP,SBP],3]
 	GeneralRegisters:array[int64,CPU.GeneralPurposeCount]
 	CPUflags:BitMask16
+	int64:age
+	int64:relativePority_percent // this goes from 0-100 to determine realtive to other threads of the same process which is higher
 } ThreadControlBlock;
 
 
@@ -173,3 +175,8 @@ KPTI:Enabled , []= a kernel segment not just one page
 KMP:[Kernel_Routines][All_Application_data per Page][Extra]:[UserData_inQutstion]
 UMP:[Kernel_Routine][physicalPageTable:only records if in use][CurrentProcessTable]:[UserData]
 CurrentProcressTable = [CPB,CTB,PermssionArray,pageTable,mailBoxin,mailBoxOut]
+
+
+
+-formulas planed to use
+-- schulduer score = PBC.priority * max(1,TBC.age) * max(1,PCB.mail/config.mail_cap) * min(100,TCB.relativePority_percent/(PCB.threads[3]))
